@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,14 +17,13 @@ public class TicTacToeClient {
     private static final int BOARD_WIDTH = 510;
     private static final int BOARD_HEIGHT = 530;
     private final int SPACE_LENGTH = 160;
-    public static final Color PURPLE = new Color(102, 0 ,153);
+    private static final Color PURPLE = new Color(102, 0 ,153);
 
     private Socket clientSocket;
     private DataOutputStream output;
     private Scanner input;
 
     private JFrame frame;
-    private JTextArea displayMessage;
     private DrawBoard drawBoard;
     private BufferedImage board;
     private BufferedImage blueO;
@@ -63,7 +61,7 @@ public class TicTacToeClient {
         connectToServer();
     }
 
-    public void loadBoard() {
+    private void loadBoard() {
         try {
             board = ImageIO.read(getClass().getResourceAsStream("/board.png"));
             blueO = ImageIO.read(getClass().getResourceAsStream("/blueO.png"));
@@ -76,7 +74,7 @@ public class TicTacToeClient {
         }
     }
 
-    public void connectToServer() {
+    private void connectToServer() {
         try {
             clientSocket = new Socket(HOST_ADDRESS, PORT);
             //input = new DataInputStream(clientSocket.getInputStream());
@@ -92,7 +90,7 @@ public class TicTacToeClient {
 //        pool.execute(this); // execute client
     }
 
-    public void start() throws IOException {
+    void start() throws IOException {
         // first message from server should be a join_response
         String response = input.nextLine();
         processMessage(response);
@@ -159,8 +157,6 @@ public class TicTacToeClient {
         System.out.println("Sending MOVE to server");
         String messageToServer = "MOVE;" + position + '\n';
         output.writeBytes(messageToServer);
-        //output.flush();  // necessary?
-        //myTurn = false;
     }
 
     private void setMark(int position) {
@@ -177,7 +173,8 @@ public class TicTacToeClient {
         drawBoard.repaint();
     }
 
-    private void render(Graphics graphics) {
+    // Updates the GUI
+    private void updateBoard(Graphics graphics) {
         if (bothConnected) {
             graphics.drawImage(board, 0, 0, null);
             for (int i = 0; i < boardSpaces.length; ++i) {
@@ -243,17 +240,17 @@ public class TicTacToeClient {
 
     private class DrawBoard extends JPanel implements MouseListener {
 
-        public DrawBoard() {
+        DrawBoard() {
+            addMouseListener(this);
+            setBackground(Color.WHITE);
             setFocusable(true);
             requestFocus();
-            setBackground(Color.WHITE);
-            addMouseListener(this);
         }
 
         @Override
         public void paintComponent(Graphics graphics) {
             super.paintComponent(graphics);
-            render(graphics);
+            updateBoard(graphics);
         }
 
         @Override

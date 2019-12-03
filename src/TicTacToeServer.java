@@ -14,29 +14,11 @@ public class TicTacToeServer {
     // 2 represents O
     private int[] boardSpaces = new int[9]; // tic tac toe board
 
-    private boolean checkForWinner(int num) {
-        return (boardSpaces[0] != 0 && boardSpaces[0] == num && boardSpaces[1] == num && boardSpaces[2] == num)
-                || (boardSpaces[3] != 0 && boardSpaces[3]== num && boardSpaces[4]== num && boardSpaces[5]== num)
-                || (boardSpaces[6] != 0 && boardSpaces[6]== num && boardSpaces[7]== num && boardSpaces[8]== num)
-                || (boardSpaces[0] != 0 && boardSpaces[0]== num && boardSpaces[3]== num && boardSpaces[6]== num)
-                || (boardSpaces[1] != 0 && boardSpaces[1]== num && boardSpaces[4]== num && boardSpaces[7]== num)
-                || (boardSpaces[2] != 0 && boardSpaces[2]== num && boardSpaces[5]== num && boardSpaces[8]== num)
-                || (boardSpaces[0] != 0 && boardSpaces[0]== num && boardSpaces[4]== num && boardSpaces[8]== num)
-                || (boardSpaces[2] != 0 && boardSpaces[2]== num && boardSpaces[4]== num && boardSpaces[6] == num);
+    public TicTacToeServer() {
+        // nothing to do
     }
 
-    private boolean checkForTie() {
-        // call this after checkForWinner then all you need to do is check if all the spaces are filled
-        for (int boardSpace : boardSpaces) {
-            if (boardSpace == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    private synchronized boolean move(Player player, int position) throws IOException {
+    private boolean playerMove(Player player, int position) throws IOException {
         if (player.opponent == null) {
             player.output.writeBytes("WAIT\n");
             System.out.println("Sent WAIT to client");
@@ -62,8 +44,29 @@ public class TicTacToeServer {
         }
     }
 
+    private boolean checkForWinner(int num) {
+        return (boardSpaces[0] != 0 && boardSpaces[0] == num && boardSpaces[1] == num && boardSpaces[2] == num)
+                || (boardSpaces[3] != 0 && boardSpaces[3]== num && boardSpaces[4]== num && boardSpaces[5]== num)
+                || (boardSpaces[6] != 0 && boardSpaces[6]== num && boardSpaces[7]== num && boardSpaces[8]== num)
+                || (boardSpaces[0] != 0 && boardSpaces[0]== num && boardSpaces[3]== num && boardSpaces[6]== num)
+                || (boardSpaces[1] != 0 && boardSpaces[1]== num && boardSpaces[4]== num && boardSpaces[7]== num)
+                || (boardSpaces[2] != 0 && boardSpaces[2]== num && boardSpaces[5]== num && boardSpaces[8]== num)
+                || (boardSpaces[0] != 0 && boardSpaces[0]== num && boardSpaces[4]== num && boardSpaces[8]== num)
+                || (boardSpaces[2] != 0 && boardSpaces[2]== num && boardSpaces[4]== num && boardSpaces[6] == num);
+    }
+
+    private boolean checkForTie() {
+        // call this after checkForWinner then all you need to do is check if all the spaces are filled
+        for (int boardSpace : boardSpaces) {
+            if (boardSpace == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // keeps track of player connection information
-    class Player implements Runnable {
+    class Player extends Thread {
         Socket clientSocket;
         Scanner input;
         DataOutputStream output;
@@ -80,7 +83,8 @@ public class TicTacToeServer {
 
         public void run() {
             try {
-                connect();
+                connectToClient();
+                // keep processing messages from clients
                 processMessage();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -93,7 +97,7 @@ public class TicTacToeServer {
             }
         }
 
-        private void connect() throws IOException {
+        private void connectToClient() throws IOException {
             input = new Scanner(clientSocket.getInputStream());
             output = new DataOutputStream(clientSocket.getOutputStream());
             output.writeBytes("JOIN_RESPONSE;" + myMark + '\n');
@@ -122,7 +126,7 @@ public class TicTacToeServer {
                     int position = Integer.parseInt(messageParts[1]);
 
                     // check to make sure the position is valid
-                    if (move(this, position)) {
+                    if (playerMove(this, position)) {
                         output.writeBytes("VALID_MOVE\n");
                         System.out.println("Sent VALID_MOVE to client");
                         opponent.output.writeBytes("OPPONENT_MOVE;" + position + '\n');
@@ -159,8 +163,6 @@ public class TicTacToeServer {
                 opponent.output.writeBytes("GAME_OVER;TIE\n");
             }
             System.out.println("Sent GAME_OVER messages to clients");
-            output.flush();
-            opponent.output.flush();
         }
     } // end Player class
 } // end TicTacToeServer class
