@@ -201,7 +201,7 @@ public class TicTacToeClient {
             if (won || lost) {
                 Graphics2D graphics2D = (Graphics2D) graphics;
                 graphics.setFont(biggerFont);
-                String playAgain = "Play again?";
+                //String playAgain = "Play again?";
                 if (won) {
                     graphics.setColor(Color.GREEN);
                     String wonString = "You won!";
@@ -213,19 +213,19 @@ public class TicTacToeClient {
                     int stringWidth = graphics2D.getFontMetrics().stringWidth(lostString);
                     graphics.drawString(lostString, BOARD_WIDTH / 2 - stringWidth / 2, BOARD_HEIGHT / 2);
                 }
-                int playAgainWidth = graphics2D.getFontMetrics().stringWidth(playAgain);
-                graphics.drawString(playAgain, BOARD_WIDTH / 2 - playAgainWidth / 2, BOARD_HEIGHT-(BOARD_HEIGHT/3));
+                //int playAgainWidth = graphics2D.getFontMetrics().stringWidth(playAgain);
+                //graphics.drawString(playAgain, BOARD_WIDTH / 2 - playAgainWidth / 2, BOARD_HEIGHT-(BOARD_HEIGHT/3));
             }
             if (tie) {
                 Graphics2D graphics2D = (Graphics2D) graphics;
                 graphics.setColor(Color.GREEN);
                 graphics.setFont(biggerFont);
                 String tieString = "It's a tie!";
-                String playAgain = "Play again?";
+                //String playAgain = "Play again?";
                 int stringWidth = graphics2D.getFontMetrics().stringWidth(tieString);
                 graphics.drawString(tieString, BOARD_WIDTH / 2 - stringWidth / 2, BOARD_HEIGHT / 2);
-                int playAgainWidth = graphics2D.getFontMetrics().stringWidth(playAgain);
-                graphics.drawString(playAgain, BOARD_WIDTH / 2 - playAgainWidth / 2, BOARD_HEIGHT-(BOARD_HEIGHT/3));
+                //int playAgainWidth = graphics2D.getFontMetrics().stringWidth(playAgain);
+                //graphics.drawString(playAgain, BOARD_WIDTH / 2 - playAgainWidth / 2, BOARD_HEIGHT-(BOARD_HEIGHT/3));
             }
         } else {  // still waiting to connect
             graphics.setColor(PURPLE);
