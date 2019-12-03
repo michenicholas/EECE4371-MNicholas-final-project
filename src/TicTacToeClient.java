@@ -50,13 +50,13 @@ public class TicTacToeClient {
         drawBoard.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
         frame = new JFrame();
-        frame.setTitle("Tic-Tac-Toe");
         frame.setContentPane(drawBoard);
         frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setTitle("Tic-Tac-Toe");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         connectToServer();
     }

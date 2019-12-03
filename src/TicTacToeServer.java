@@ -118,7 +118,7 @@ public class TicTacToeServer {
         }
 
         private void processMessage() throws IOException {
-            while (input.hasNextLine()) {
+            while (input.hasNextLine()) {  // keep processing incoming messages
                 String message = input.nextLine();
                 if (message.startsWith("MOVE")) {
                     System.out.println("Got MOVE message from client");
