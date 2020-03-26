@@ -8,8 +8,8 @@ import java.util.*;
 public class TicTacToeServer {
     private Player currentPlayer;
 
-    // I changed this to an int array because comparing a String with null using the String.equals() method in
-    // the checkForWinner() class throws a NullPointerException
+    // I changed this to an int array because comparing a String with null using String.equals() in
+    // the checkForWinner() method throws a NullPointerException
     // 1 represents X
     // 2 represents O
     private int[] boardSpaces = new int[9]; // tic tac toe board
@@ -56,7 +56,7 @@ public class TicTacToeServer {
     }
 
     private boolean checkForTie() {
-        // call this after checkForWinner then all you need to do is check if all the spaces are filled
+        // call this after checkForWinner, then all you need to do is check if all the spaces are filled
         for (int boardSpace : boardSpaces) {
             if (boardSpace == 0) {
                 return false;
