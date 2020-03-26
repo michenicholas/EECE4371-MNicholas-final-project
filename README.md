@@ -2,7 +2,7 @@
 TCP Tic-Tac-Toe
 
 # Description
-This is a real-time, multiplayer Tic-Tac-Toe game that uses TCP connections to allow two clients to play with each other. First, run Server.java to set up the server and wait for clients to join. Then, run Client.java to connect the first player to the server via TCP connection. A window will pop up on this player's screen with a message saying that they're waiting for another player to connect. Once a second player connects to the server, the Tic-Tac-Toe board will automatically load in both of the clients' windows.   
+This is a real-time, multiplayer Tic-Tac-Toe game that uses TCP connections to allow two clients to play with each other. First, run Server.java from the command line to set up the server and wait for clients to join. Then, run Client.java, also from the command line, to connect the first player to the server via TCP connection. A window will pop up on this player's screen with a message saying that they're waiting for another player to connect. Once a second player connects to the server, the Tic-Tac-Toe board will automatically load in both of the clients' windows.   
 The first player to connect is X's and they get to go first.
 
 # Why I chose this project  
