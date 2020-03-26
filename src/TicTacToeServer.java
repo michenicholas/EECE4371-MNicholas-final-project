@@ -118,6 +118,9 @@ public class TicTacToeServer {
         }
 
         private void processMessage() throws IOException {
+            int num;
+            int opponentNum;
+            
             while (input.hasNextLine()) {  // keep processing incoming messages
                 String message = input.nextLine();
                 if (message.startsWith("MOVE")) {
@@ -133,8 +136,7 @@ public class TicTacToeServer {
                         System.out.println("Sent OPPONENT_MOVE;" + position + " to opponent");
                     }
                 }
-                int num;
-                int opponentNum;
+                
                 if (myMark.equals("X")) {
                     num = 1;
                     opponentNum = 2;
